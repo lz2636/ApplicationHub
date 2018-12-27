@@ -1,4 +1,3 @@
 #!/bin/bash
-apt-get install nodejs-legacy
 npm install express --save-dev
-npm i -g pm2@2.4.3
+npm install
