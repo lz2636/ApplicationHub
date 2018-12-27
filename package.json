@@ -1,0 +1,22 @@
+{
+  "name": "applicationhub",
+  "version": "1.0.0",
+  "description": "Personal project to manage web applications",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lz2636/ApplicationHub.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lz2636/ApplicationHub/issues"
+  },
+  "homepage": "https://github.com/lz2636/ApplicationHub#readme",
+  "devDependencies": {
+    "express": "^4.16.4"
+  }
+}
