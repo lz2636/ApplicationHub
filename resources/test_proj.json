@@ -1,0 +1,29 @@
+[
+  {
+    "id": "a939e17f-fdd8-4ea6-aa9b-79702a23b216",
+    "account": "app-hub-z",
+    "tag": "project",
+    "name": "intern at A",
+    "info": {
+      "text": "I worked for a compiler project"
+    }
+  },
+  {
+    "id": "07d5c5b4-2b4b-46e2-bebc-b3d8669bcaaa",
+    "account": "app-hub-z",
+    "tag": "project",
+    "name": "web dev course",
+    "info": {
+      "text": "Implemented a small web service"
+    }
+  },
+  {
+    "id": "fe9e3277-abd0-43ea-abbc-caba35c235e0",
+    "account": "app-hub-z",
+    "tag": "project",
+    "name": "research at B univ",
+    "info": {
+      "text": "I proposed a new method for XXX"
+    }
+  }
+]

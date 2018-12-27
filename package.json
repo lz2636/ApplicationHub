@@ -18,5 +18,8 @@
   "homepage": "https://github.com/lz2636/ApplicationHub#readme",
   "devDependencies": {
     "express": "^4.16.4"
+  },
+  "dependencies": {
+    "bootstrap": "^4.2.1"
   }
 }
