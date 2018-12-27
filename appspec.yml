@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /var/www/ApplicationHub/
+    destination: /var/www/apphub/
 hooks:
   BeforeInstall:
     - location: scripts/install_dependencies
@@ -17,7 +17,7 @@ hooks:
       timeout: 300
       runas: root
   ApplicationStop:
-    - location: scripts/stop_server
+    - location: scripts/stop_server_new
       timeout: 300
       runas: root
 
