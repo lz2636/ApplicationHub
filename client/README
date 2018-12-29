@@ -1,0 +1,5 @@
+run "npm start" to start the front-end server(webpack).
+
+This server directly interacts with UI. It forwards request to the nodejs
+backend to fetch data and generate dynamic html.
+
