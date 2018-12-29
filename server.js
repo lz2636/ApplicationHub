@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 
 const projects = require('./routes/projects');
 app.use('/projects', projects);
@@ -12,5 +13,6 @@ app.get('/', (req, res) => {
 app.get('*', function (req, res) {
     res.redirect('/');
 });
+
 
 app.listen(3000, () => console.log('Server running on port 3000'))
