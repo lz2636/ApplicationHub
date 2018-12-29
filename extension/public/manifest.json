@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "browser_action": {
     "default_icon": "logo.png",
-    "default_popup": "src/index.html"
+    "default_popup": "index.html"
   },
   "icons": {
     "16": "logo.png",
@@ -14,7 +14,7 @@
   },
   "content_security_policy": "script-src 'self' 'sha256-GgRxrVOKNdB4LrRsVPDSbzvfdV4UqglmviH9GoBJ5jk='; object-src 'self'",
   "background": {
-    "page": "src/background.html"
+    "page": "app/background.html"
   },
   "content_scripts": [
     {
@@ -23,7 +23,7 @@
         "https://*/*"
       ],
       "js": [
-        "src/content.js"
+        "app/content.js"
       ]
     }
   ],
