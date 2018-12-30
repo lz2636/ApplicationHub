@@ -1,13 +1,17 @@
 const express = require('express');
 const app = express();
-const path = require('path');
 
+
+const auth = require('./routes/auth');
 const projects = require('./routes/projects');
+require('./services/passport');
+
+app.use('/auth', auth);
 app.use('/projects', projects);
 
-//home page
+//landing page
 app.get('/', (req, res) => {
-    res.send('hello from application hub modified!')
+    res.send('hello from application!')
 });
 
 app.get('*', function (req, res) {
@@ -15,4 +19,4 @@ app.get('*', function (req, res) {
 });
 
 
-app.listen(3000, () => console.log('Server running on port 3000'))
+app.listen(5000, () => console.log('Server running on port 5000'));
