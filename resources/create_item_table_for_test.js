@@ -18,7 +18,7 @@ let item_params = {
     TableName: item_table_name,
     KeySchema: [
         {AttributeName: "id", KeyType: "HASH"},  //Partition key
-        {AttributeName: "tag", KeyType: "RANGE"},  //Partition key
+        {AttributeName: "tag", KeyType: "RANGE"},  //Sort key
     ],
     AttributeDefinitions: [
         {AttributeName: "id", AttributeType: "S"},

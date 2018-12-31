@@ -9,18 +9,18 @@ class DatabaseHelper {
         });
 
         this.docClient = new AWS.DynamoDB.DocumentClient();
-        this.userTable = "user";
+        this.userTable = "users";
         this.itemTable = "items";
     }
 
     query(query_params, callback) {
-        this.docClient.scan(query_params, function (err, data) {
+        this.docClient.query(query_params, function (err, data) {
             if (err) {
                 console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
-            } else {
-                // use callback
-                callback(err, data);
             }
+            // use callback
+            callback(err, data);
+
         });
     }
 
@@ -28,10 +28,19 @@ class DatabaseHelper {
         this.docClient.scan(scan_params, function (err, data) {
             if (err) {
                 console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
-            } else {
-                // use callback
-                callback(err, data);
             }
+            // use callback
+            callback(err, data);
+        });
+    }
+
+    put(put_params, callback) {
+        this.docClient.put(put_params, function (err, data) {
+            if (err) {
+                console.error("Unable to add item. Error JSON:", JSON.stringify(err, null, 2));
+            }
+            callback(err, data);
+
         });
     }
 }
