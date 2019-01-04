@@ -6,11 +6,22 @@ var projects = [];
 projects.push("compiler");
 projects.push("web service");
 
+// A project object from backend has following structure:
+// Item: {
+//   "id": uuid(),
+//   "account": test_account,
+//   "tag": "project",
+//   "name": "intern at A",
+//   "info": {
+//       "text": "I worked for a compiler project"
+//   }
+// }
 class Project extends React.Component {
   constructor(props) {
-    super(props)
-    this.state= {
+    super(props);
+    this.state = {
       showModifyProject: false,
+      name: props.name,
       content: props.content,
     }
 
@@ -38,10 +49,11 @@ class Project extends React.Component {
     }
   }
 
-  renderContent() {
+  renderSelf() {
     if (!this.state.showModifyProject) {
       return (
         <div>
+          <div className="template-name">{this.state.name}</div>
           <div className="template-content">{this.state.content}</div>
           <button onClick={
             () => this.setState({showModifyProject: true})}>Modify
@@ -54,7 +66,7 @@ class Project extends React.Component {
   render() {
     return (
       <div> 
-        {this.renderContent()}
+        {this.renderSelf()}
         {this.renderModifyProject()}        
       </div>
     )
@@ -106,7 +118,7 @@ class ProjectContainer extends React.Component {
         <hr/>
         {this.renderAddProject()}
         {this.state.projects.map(
-          (p) => <Project content={p} />
+        (p) => <Project name={p.name} content={p.info.text} />
         )}
       </div>
     );
@@ -117,7 +129,10 @@ class ProjectContainer extends React.Component {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {projects: []}; // expect a list of templates from database
+    this.state = {
+      projects: [],
+      dataReceived: false
+    }; // expect a list of projects from database
   }
   
   // invoked before render, fetch data from db here
@@ -127,14 +142,19 @@ class App extends React.Component {
     // TODO: need to call db api to get all projects for an account
     // and then update state of App
     axios.get('/projects').then(res => {
-      console.log(res.data);
+      this.setState({
+        projects: res.data,
+        dataReceived: true
+      });
+      console.log(this.state.projects);
     });
   }
 
   render() {
+    if (!this.state.dataReceived) {return null}
     return (
       <div>
-        <ProjectContainer projects={projects}/>
+        <ProjectContainer projects={this.state.projects}/>
       </div>
     );
   }
