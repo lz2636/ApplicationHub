@@ -1,5 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const GitHubStrategy = require('passport-github').Strategy;
 const keys = require('../config/key');
 const db = require('./dbhelper');
 
@@ -32,16 +33,14 @@ function findUser(id) {
 function addUser(profile) {
     let user = {
         "id": profile.id,
-        "firstName": profile.name.givenName,
-        "lastName": profile.name.familyName
+        "username": profile.username
     };
     return new Promise(function (callback) {
         db.put({
             TableName: db.userTable,
             Item: {
                 "id": user.id,
-                "firstName": user.firstName,
-                "lastName": user.lastName
+                "username": user.username
             }
         }, function (err) {
             if (err) {
@@ -60,9 +59,25 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
     console.log("deserialize user id", id);
     findUser(id).then(user => {
-       done(null, user);
+        done(null, user);
     });
 });
+
+
+function handleProfile(accessToken, refreshToken, profile, done) {
+    console.log('profile', profile);
+    findUser(profile.id).then(existingUser => {
+        console.log('existing user is', existingUser);
+        if (existingUser) {
+            done(null, existingUser);
+        } else {
+            addUser(profile).then(function (user) {
+                console.log("add new user", user);
+                done(null, user);
+            });
+        }
+    });
+}
 
 passport.use(
     new GoogleStrategy(
@@ -71,19 +86,14 @@ passport.use(
             clientSecret: keys.googleClientSecret,
             callbackURL: '/auth/google/callback'
         },
-        (accessToken, refreshToken, profile, done) => {
-            console.log('profile', profile);
-            findUser(profile.id).then(existingUser => {
-                console.log('existing user is', existingUser);
-                if (existingUser) {
-                    done(null, existingUser);
-                } else {
-                    addUser(profile).then(function (user) {
-                        console.log("add new user", user);
-                        done(null, user);
-                    });
-                }
-            });
-        }
+        handleProfile
     )
 );
+
+passport.use(new GitHubStrategy({
+        clientID: keys.githubClientID,
+        clientSecret: keys.githubClientSecret,
+        callbackURL: "http://127.0.0.1:5000/auth/github/callback"
+    },
+    handleProfile
+));

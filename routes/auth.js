@@ -23,6 +23,7 @@ router.get('/current_user', function (req, res) {
 
 router.get('/logout', function (req, res) {
     req.logout();
+    passport.user = null;
     res.send(req.user);
 });
 
@@ -34,5 +35,15 @@ router.get('/google',
 );
 
 router.get('/google/callback', passport.authenticate('google'));
+
+router.get('/github',
+    passport.authenticate('github'));
+
+router.get('/github/callback',
+    passport.authenticate('github', { failureRedirect: '/login' }),
+    function(req, res) {
+        // Successful authentication, redirect home.
+        res.redirect('/');
+    });
 
 module.exports = router;
