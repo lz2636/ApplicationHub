@@ -33,9 +33,9 @@ let item_params = {
 //delete first before create new
 dynamoDB.deleteTable({TableName: item_table_name}, function (err) {
     if (err) {
-        console.error("Unable to delete user table. Error JSON:", JSON.stringify(err, null, 2));
+        console.error("Unable to delete items table. Error JSON:", JSON.stringify(err, null, 2));
     } else {
-        console.log("deleted user table.");
+        console.log("deleted items table.");
     }
 });
 
@@ -47,7 +47,7 @@ dynamoDB.waitFor('tableNotExists', {TableName: item_table_name}, function (err, 
 
         dynamoDB.createTable(item_params, function (err) {
             if (err) {
-                console.error("Unable to create user table. Error JSON:", JSON.stringify(err, null, 2));
+                console.error("Unable to create items table. Error JSON:", JSON.stringify(err, null, 2));
             } else {
                 console.log(item_table_name + " created.");
 

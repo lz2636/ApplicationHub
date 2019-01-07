@@ -2,9 +2,6 @@ import React from 'react';
 import './index.css';
 import axios from 'axios';
 
-var projects = [];
-projects.push("compiler");
-projects.push("web service");
 
 // A project object from backend has following structure:
 // Item: {
@@ -21,29 +18,70 @@ class Project extends React.Component {
     super(props);
     this.state = {
       showModifyProject: false,
+      id: props.id,
       name: props.name,
       content: props.content,
-    }
+    };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleContentChange = this.handleContentChange.bind(this);
     this.handleModifyProject = this.handleModifyProject.bind(this);
+    this.handleDeleteProject = this.handleDeleteProject.bind(this);
   }
 
-  handleChange(e) {
+  // used to record typed text on the fly when user is entering a new project
+  handleNameChange(e) {
+    this.setState({name: e.target.value});
+  }
+
+  // used to record typed text on the fly when user is entering a new project
+  handleContentChange(e) {
     this.setState({content: e.target.value});
   }
 
   handleModifyProject(e) {
     e.preventDefault();
     this.setState({showModifyProject: false});
+    axios.post('/projects/update', {
+      id: this.state.id,
+      tag: 'project',
+      name: this.state.name,
+      text: this.state.content
+    })
+    .then(function (res) {
+      // TODO: only reload with success response
+      window.location.reload();
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+  }
+
+  handleDeleteProject(e) {
+    e.preventDefault();
+    axios.post('/projects/delete', {
+      id: this.state.id,
+      tag: 'project'
+    })
+    .then(function (res) {
+      window.location.reload();
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
   }
 
   renderModifyProject() {
     if (this.state.showModifyProject) {
       return (
         <form onSubmit={this.handleModifyProject}>
-          <input type="text" value={this.state.content} onChange={this.handleChange}/>
-          <input type="submit" value="Submit"/>
+          <div>
+            Name:
+            <input type="text" value={this.state.name} onChange={this.handleNameChange}/>
+            Description:
+            <input type="text" value={this.state.content} onChange={this.handleContentChange}/>
+            <input type="submit" value="Submit"/>
+          </div>
         </form>
       )
     }
@@ -58,6 +96,7 @@ class Project extends React.Component {
           <button onClick={
             () => this.setState({showModifyProject: true})}>Modify
           </button>
+          <button onClick={this.handleDeleteProject}>Delete</button>
         </div>
       )
     }
@@ -67,49 +106,78 @@ class Project extends React.Component {
     return (
       <div> 
         {this.renderSelf()}
-        {this.renderModifyProject()}        
+        {this.renderModifyProject()}       
       </div>
     )
   }
 }
+
+
 
 class ProjectContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       showAddProject: false, // to add new project
-      newProject: '',
+      newName: '',
+      newContent: '',
       projects: props.projects, // props are array of projects(string)
-    }
+    };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleNameChange = this.handleNameChange.bind(this);
+    this.handleContentChange = this.handleContentChange.bind(this);
     this.handleAddProject = this.handleAddProject.bind(this);
   }
 
-  handleChange(e) {
-    this.setState({newProject: e.target.value});
+  // used to record typed text on the fly when user is entering a new project
+  handleNameChange(e) {
+    this.setState({newName: e.target.value});
+  }
+
+  // used to record typed text on the fly when user is entering a new project
+  handleContentChange(e) {
+    this.setState({newContent: e.target.value});
   }
 
   handleAddProject(e) {
-    e.preventDefault()
-    const projectsCopy = this.state.projects.slice();
-    projectsCopy.push(this.state.newProject);
-    this.setState({projects: projectsCopy, showAddProject: false});
+    e.preventDefault();
+    // get id and account from server
+    axios.post('/projects/put', {
+      tag: 'project',
+      name: this.state.newName,
+      text: this.state.newContent
+    })
+    .then(function (res) {
+      // TODO: only reload with success response
+      window.location.reload();
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
+    // const p = this.state.newProject;
+    // p.
+    // const projectsCopy = this.state.projects.slice();
+    // projectsCopy.push(this.state.newProject);
+    // this.setState({projects: projectsCopy, showAddProject: false});
   }
 
   renderAddProject() {
     if (this.state.showAddProject) {
       return (
         <form onSubmit={this.handleAddProject}>
-            New project:
-            <input type="text" onChange={this.handleChange}/>
-          <input type="submit" value="Submit"/>
+          <div>
+            Name:
+            <input type="text" onChange={this.handleNameChange}/>
+            Description:
+            <input type="text" onChange={this.handleContentChange}/>
+            <input type="submit" value="Submit"/>
+          </div>
         </form>
       );
     }
   }
 
-  render() {
+  render() { 
     return (
       <div className="template-header">
         Project templates:
@@ -118,7 +186,7 @@ class ProjectContainer extends React.Component {
         <hr/>
         {this.renderAddProject()}
         {this.state.projects.map(
-        (p) => <Project name={p.name} content={p.info.text} />
+        (p) => <Project id={p.id} name={p.name} content={p.info.text} />
         )}
       </div>
     );

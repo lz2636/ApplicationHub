@@ -24,6 +24,7 @@ class DatabaseHelper {
         });
     }
 
+    // return every item in a table or with an filter condition
     scan(scan_params, callback) {
         this.docClient.scan(scan_params, function (err, data) {
             if (err) {
@@ -34,6 +35,7 @@ class DatabaseHelper {
         });
     }
 
+    // create new item
     put(put_params, callback) {
         this.docClient.put(put_params, function (err, data) {
             if (err) {
@@ -41,6 +43,26 @@ class DatabaseHelper {
             }
             callback(err, data);
 
+        });
+    }
+
+    // update an existing item
+    update(update_params, callback) {
+        this.docClient.update(update_params, function (err, data) {
+            if (err) {
+                console.error("Unable to update item. Error:", JSON.stringify(err, null, 2));
+            }
+            callback(err, data);
+        });
+    }
+
+    //delete an existing item
+    delete(delete_params, callback) {
+        this.docClient.delete(delete_params, function (err, data) {
+            if (err) {
+                console.error("Unable to delete item. Error:", JSON.stringify(err, null, 2));
+            }
+            callback(err, data);
         });
     }
 }
