@@ -22,11 +22,6 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0"
   },
-  "proxy": {
-    "/auth/*": {
-      "target": "http://127.0.0.1:5000"
-    }
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

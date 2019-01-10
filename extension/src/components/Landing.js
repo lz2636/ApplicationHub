@@ -7,7 +7,8 @@ class Landing extends Component {
                 <div className="container">
                     <h4 className="display-4" style={{'font-size': '28px'}}>ApplicationHub</h4>
                     <hr className="my-4"/>
-                    <p className="lead" style={{'font-size': '14px'}}>Save your valuable time from tedious online application pages</p>
+                    <p className="lead" style={{'font-size': '14px'}}>Save your valuable time from tedious online
+                        application pages</p>
                 </div>
             </div>
         );

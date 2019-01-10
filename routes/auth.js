@@ -22,8 +22,10 @@ router.get('/current_user', function (req, res) {
 });
 
 router.get('/logout', function (req, res) {
+    console.log('try to logout!');
     req.logout();
     passport.user = null;
+    delete req.session;
     res.send(req.user);
 });
 
@@ -40,10 +42,10 @@ router.get('/github',
     passport.authenticate('github'));
 
 router.get('/github/callback',
-    passport.authenticate('github', { failureRedirect: '/login' }),
-    function(req, res) {
+    passport.authenticate('github'),
+    (req, res) => {
         // Successful authentication, redirect home.
-        res.redirect('/');
+        res.redirect('/dashboard');
     });
 
 module.exports = router;
